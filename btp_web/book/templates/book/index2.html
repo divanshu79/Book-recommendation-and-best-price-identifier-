@@ -1,0 +1,108 @@
+{% extends 'book/base.html' %}
+{% load staticfiles %}
+{% block body %}
+<script type="text/javascript">
+
+</script>
+{% csrf_token %}
+
+
+<script type="text/javascript">
+    function request_access(id){
+    console.log('hello');
+    var image = document.getElementById("image_"+id).value;
+    var title =document.getElementById("titles_"+id).value;
+    var auther = document.getElementById("auther_"+id).value;
+    var amazon_link = document.getElementById("amazon_"+id).value;
+    console.log("data: " + title);
+   $.ajax({
+    url:"/send/",
+    type: "GET",
+    data: {name: title,image:image,auther:auther,amazon_link:amazon_link},
+    success:function(response){
+      
+    document.location.href= {% url 'all' %} + "?amazon_link="+amazon_link;
+    
+    },
+    complete:function(){},
+    error:function (xhr, textStatus, thrownError){
+        alert("Internet Problem");
+    }
+});
+   
+}
+
+
+        function send(id)
+            {
+                var $inp = $('#input-22-'+id);
+
+
+                var  rating=$inp.val();
+                var image = document.getElementById("image_"+id).value;
+                var title =document.getElementById("titles_"+id).value;
+                var auther = document.getElementById("auther_"+id).value;
+                var amazon_link = document.getElementById("amazon_"+id).value;
+                console.log("data: " + title);
+               $.ajax({
+                url:"/send/",
+                type: "GET",
+                data: {name: title,image:image,auther:auther,rating:rating,amazon_link:amazon_link},
+                success:function(response){
+                    console.log(response)
+                },
+                complete:function(){},
+                error:function (xhr, textStatus, thrownError){
+                    alert("error doing something");
+                }
+                });
+
+            }
+
+</script>
+<div class="content_middle">
+      <div class="container">
+        <div class="content_middle_box">
+
+        <div class="top_grid">
+        {% for element in complete_info %}
+        {% if element.image %}
+
+            <div class="col-md-4" style="height: 400px">
+              <div class="grid1">
+                <div class="view view-first">
+                  <div class="index_img"><img id="image_{{forloop.counter}}" src="{{ element.image }}" class="img-responsive" alt=""/></div>
+                    <div class="sale">{{element.global_rating}}</div>
+                      <div class="mask">
+                        <div class="info"><i class="search"> </i> <p onclick='request_access("{{forloop.counter}}")'>Show More</p></div>
+                        <!-- <ul class="mask_img">
+                            <li class="star"><img src="{% static 'book/images/star.png' %}" alt=""/></li>
+                            <li class="set"><img src="{% static 'book/images/set.png' %}" alt=""/></li>
+                            <div class="clearfix"> </div>
+                        </ul> -->
+                       </div>
+                   </div> 
+                   <!-- <i class="home"></i> -->
+                 <div class="inner_wrap">
+                 <input type="text" id="titles_{{forloop.counter}}" style="display: none;" value="{{ element.title }}">
+                    <h3><p onclick='request_access("{{forloop.counter}}")'>{{ element.title }}</p></h3>
+                    
+                    <input type="text" id="auther_{{forloop.counter}}" style="display: none;" value="{{ element.auther }}">
+                    <ul class="star1">
+                      <h4 class="green"><p onclick='request_access("{{forloop.counter}}")'>{{ element.auther}}</p></h4>
+                      <li> <input id="input-22-{{forloop.counter}}" value="0" type="text" class="rating" data-min=0 data-max=5 data-step=0.2 data-rtl=1 data-size="xs" data-container-class='text-right' data-glyphicon=0 title="" onchange="send('{{forloop.counter}}')"></li>
+                      <input type="text" id="amazon_{{forloop.counter}}"  name="amazon_{{forloop.counter}}" style="display: none;" value="{{ element.amazon_link }}">
+                    </ul>
+                 </div>
+               </div>
+            </div>
+            <div class="clearfix visible-md-block"></div>
+            {% endif %}
+                {% endfor %}
+        </div>
+
+    </div>
+    </div>
+    </div>
+
+{% endblock %}

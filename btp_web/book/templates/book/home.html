@@ -1,0 +1,25 @@
+{% extends 'book/base.html' %}
+
+{% block body %}
+{% csrf_token %}
+    {% for element in context %}
+        <div class="containe r-fluid" style="width: 5300px;">
+
+        <div class="row">
+
+            <!-- Left Album Info -->
+            <div class="col-sm-4 col-md-3">
+                <div class="panel panel-default">
+                    <div class="row">
+                    <div class="col-lg-6 panel-body">
+                            <a href="{{ element.amazon_link }}" rel="noopener noreferrer" target="_blank">
+                                <img src="{{ element.image }}" class="img-responsive">
+                            </a>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    {% endfor %}
+{% endblock %}

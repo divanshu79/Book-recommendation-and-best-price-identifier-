@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+{% load staticfiles %}
+	<title>Precision</title>
+	<style type="text/css">
+	h1
+	{
+	margin: 1em 0 0.5em 0;
+	color: #148773;
+	font-size: 26px;
+	line-height: 40px;
+	font-weight: bold;
+	font-family: 'Josefin Sans', sans-serif;
+	text-align: center;
+	}
+	</style>
+</head>
+<body>
+<h1>
+Precision
+</h1>
+<img src='/static/{{imgname}}'>
+
+<img src='/static/{{imgr}}'>
+<img src="/static/{{imgroc}}">
+Area under the curve:{{area}}
+<!-- <b>MAE:</b>{{sum}} -->
+<br>
+<!-- <b>RMSE:</b>{{rmse}} -->
+<br>
+
+</body>
+</html>

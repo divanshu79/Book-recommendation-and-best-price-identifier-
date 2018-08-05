@@ -1,0 +1,63 @@
+{% extends 'book/base2.html' %}
+
+{% block body %}
+{% csrf_token %}
+<script type="text/javascript">
+    function request_access(id){
+    console.log('hello');
+
+    console.log("data: " + id);
+   $.ajax({
+    url:"/genre/",
+    type: "GET",
+    data: { amazon_link : id },
+    success:function(response)
+    {
+         document.location.href= {% url 'genre' %} + "?amazon_link="+id;
+    },
+    complete:function(){},
+    error:function (xhr, textStatus, thrownError){
+        alert("error doing something");
+    }
+});
+}
+
+    function send()
+    {
+    document.getElementById('form1').submit();
+    }
+</script>
+      <div id="new">
+
+        </div>
+        <div id="oldi">
+    {% for element in complete_info %}
+    {% if element.image %}
+
+        <div id='old' class="container-fluid" style="width: 5300px;">
+
+        <div class="row">
+
+            <!-- Left Album Info -->
+            <div class="col-sm-4 col-md-3">
+                <div class="panel panel-default">
+                    <div class="row">
+                    <div class="col-lg-6 panel-body">
+
+                        <!-- <form id="form1" class="navbar-form navbar-left" role="search" method="get" action="" >
+                            <input type="text" value="{{ element.link }}" name="{{ element.link }}"> -->
+<div class="cursors">
+                                <img src="{{ element.image }}" class="pointer" onclick='request_access("{{element.link}}")'>
+                                </div>
+                        <!-- </form> -->
+
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        {% endif%}
+    {% endfor %}
+    </div>
+{% endblock %}

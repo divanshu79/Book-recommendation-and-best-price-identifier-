@@ -1,0 +1,118 @@
+
+{% extends 'book/base.html' %}
+
+{% block body %}
+<script type="text/javascript">
+
+</script>
+{% csrf_token %}
+
+
+<script type="text/javascript">
+    function request_access(id){
+    console.log('hello');
+    var image = document.getElementById("image_"+id).value;
+    var title =document.getElementById("titles_"+id).value;
+    var auther = document.getElementById("auther_"+id).value;
+    var amazon_link = document.getElementById("amazon_"+id).value;
+    console.log("data: " + title);
+   $.ajax({
+    url:"/send/",
+    type: "GET",
+    data: {name: title,image:image,auther:auther,amazon_link:amazon_link},
+    success:function(response){
+        console.log(response)
+         $.ajax({
+    url:"/page/",
+    type: "GET",
+    data: {link:amazon_link},
+    success:function(response)
+    {
+         $('#oldi').fadeOut();
+        $('#new').html(response);
+
+    },
+    complete:function(){},
+    error:function (xhr, textStatus, thrownError){
+        alert("error doing something");
+    }
+});
+    },
+    complete:function(){},
+    error:function (xhr, textStatus, thrownError){
+        alert("error doing something");
+    }
+});
+   
+}
+
+
+        function send(id)
+            {
+                var $inp = $('#input-22-'+id);
+
+
+                var  rating=$inp.val();
+                var image = document.getElementById("image_"+id).value;
+                var title =document.getElementById("titles_"+id).value;
+                var auther = document.getElementById("auther_"+id).value;
+                var amazon_link = document.getElementById("amazon_"+id).value;
+                console.log("data: " + title);
+               $.ajax({
+                url:"/send/",
+                type: "GET",
+                data: {name: title,image:image,auther:auther,rating:rating,amazon_link:amazon_link},
+                success:function(response){
+                    console.log(response)
+                },
+                complete:function(){},
+                error:function (xhr, textStatus, thrownError){
+                    alert("error doing something");
+                }
+                });
+
+            }
+
+</script>
+
+<div id='new'></div>
+<div id='oldi'>
+{% for element in complete_info %}
+        <div class="containe r-fluid" style="width: 5300px;">
+
+        <div class="row">
+
+            <!-- Left Album Info -->
+            <div class="col-sm-4 col-md-3">
+                <div class="panel panel-default">
+                    <div class="row">
+                    <div class="col-lg-6 panel-body">
+                            
+                                 <input type="text" id="image_{{forloop.counter}}" style="display: none;" value="{{ element.image }}">
+                                 <img src="{{ element.image }}" class="img-responsive" onclick='request_access("{{forloop.counter}}")'>
+                          
+                    </div>
+                    <div class="col-lg-6 panel-body" style="padding-left: 0px">
+
+                       
+                            <input type="text" id="titles_{{forloop.counter}}" style="display: none;" value="{{ element.title }}"><p onclick='request_access("{{forloop.counter}}")'>{{ element.title }}</p></h2>
+                            <input type="text" id="auther_{{forloop.counter}}" style="display: none;" value="{{ element.auther }}"><h2 id="auther" ><p onclick='request_access("{{forloop.counter}}")'>{{ element.auther}}</p></h2>
+
+                            <div id="el" onclick="star()">
+
+                            <input id="input-22-{{forloop.counter}}" value="0" type="text" class="rating" data-min=0 data-max=5 data-step=0.2 data-rtl=1 data-size="xs" data-container-class='text-right' data-glyphicon=0 title="" onchange="send('{{forloop.counter}}')">
+                            <input type="text" id="amazon_{{forloop.counter}}" style="display: none;" value="{{ element.amazon_link }}">
+                            </div>
+
+                      
+
+                        <!--<button class="btn-green" onclick='request_access("{{element.title}}")' id="hello">Join Group</button>-->
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}
